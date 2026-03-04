@@ -1,2 +1,18 @@
-# alg-p1-eficiencia
-Resultado de la práctica 1 de la asignatura ALG.
+# Práctica 1 - Análisis de eficiencia de algoritmos
+Algorítmica ~ Grupo A2
+
+## Autores
+(quiénes somos)
+## Entorno de compilación
+(en qué ordenador hemos medido tiempos)
+## Estructura del repositorio
+(explicar estructura de carpetas)
+## Cómo reproducir los resultados
+### 1. Compilación
+(makefile)
+### 2. Generación de datos empíricos 
+(.sh de medición)
+### 3. Creación de gráficas y ajuste híbrido
+(.sh de gnuplot)
+
+## Notas
