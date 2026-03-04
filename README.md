@@ -6,7 +6,13 @@ Algorítmica ~ Grupo A2
 ## Entorno de compilación
 (en qué ordenador hemos medido tiempos)
 ## Estructura del repositorio
-(explicar estructura de carpetas)
+
+src/        Implementación de los algoritmos en C++
+scripts/    Scripts de medición y graficado
+data/       Datos empíricos generados
+figures/    Gráficas generadas
+memoria/    Memoria final de la práctica
+
 ## Cómo reproducir los resultados
 ### 1. Compilación
 (makefile)
