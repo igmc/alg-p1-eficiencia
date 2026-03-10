@@ -14,12 +14,6 @@ script_dir=$(dirname $0)
 bin_dir="$script_dir/bin"
 
 
-# parámetros por defecto para el bucle
-inicio=100
-fin=20000
-incremento=200
-
-
 ejecutable=$1
 inicio=$2
 fin=$3
