@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 # script genérico para medir un ejecutable sobre un rango de tamaños de entrada
 # autor: Juan Ignacio Molina
 # uso: medicion.sh <programa> <inicio> <fin> <incremento>
@@ -29,8 +29,9 @@ i=$inicio
 mkdir -p $(dirname $salida)
 
 # asegurar que el archivo de salida existe para que el append funcione
-echo "" > $salida
-while [ $i -lt $fin ]; do
+touch $salida
+
+while [ $i -le $fin ]; do
     $ejecutable $tam_semilla $i >> $salida
     (( i += incremento ))
 done
