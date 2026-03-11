@@ -1,13 +1,15 @@
-// Implementación del algoritmo de ordenación por shellsort
+// Implementación del algoritmo de ordenación por shellsort (peor caso)
+// El vector se genera en orden decreciente para simular el peor caso.
 
 // Compilación:
-// g++ src/shellsort.cpp -o bin/shellsort
+// g++ src/shellsort_peor.cpp -o bin/shellsort_peor
 
 // Ejecución Manual:
-// ./bin/shellsort <semilla> <tamanio>
+// ./bin/shellsort_peor <semilla> <tamanio>
+// <semilla> puede ser cualquier valor, ya que este código la ignora.
 
 // Ejecución mediante script:
-// ./scripts/medicion.sh bin/shellsort <inicio> <fin> <incremento>
+// ./scripts/medicion.sh bin/shellsort_peor <inicio> <fin> <incremento>
 
 // Autor: Francisco Javier López Lozano
 // Año Académico: 25/26
@@ -44,8 +46,6 @@ void orden_shellsort(vector<int> &vct){
 
 int main(int argc, char *argv[]){
 
-    srand(atoi(argv[1]));
-
     clock_t tantes;
     clock_t tdespues;
 
@@ -53,9 +53,9 @@ int main(int argc, char *argv[]){
 
     int tamanio = atoi(argv[2]);
 
-    for (size_t i=0; i < tamanio; i++){
+    for (int i = tamanio; i >= 1; i--){
 
-        vector_enteros.push_back(rand() % tamanio + 1);         
+        vector_enteros.push_back(i);         
     }
 
     tantes = clock();
