@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ $# -ne 4 ]; then
+	echo "Uso incorrecto de la instruccion"
+	echo "Uso correcto: $0 programa tam_inicial tam_final incremento"
+	exit 1
+fi
+
+if [ ! -x ./$1 ]; then
+	echo "Error: el programa $1 no existe o no es ejecutable"
+	exit 1
+fi
+
+diferencia=$(( $3 - $2 ))
+
+if (( diferencia % $4 != 0 )); then
+	echo "Error: el incremento debe ser divisor de $diferencia"
+	exit 1
+fi
+
+./$1 $2 $3 $4

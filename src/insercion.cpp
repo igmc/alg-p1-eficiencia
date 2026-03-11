@@ -5,21 +5,24 @@
 
 using namespace std;
 
-void orden_burbuja(vector<int> &vct){
+void orden_insercion(vector<int> &vct){
 
     int aux;
+    int anterior;
 
     size_t tam_vector = vct.size();
 
-    for (size_t i=0; i < tam_vector-1; i++){
-        for(size_t j=0; j < tam_vector-i-1; j++){
+    for (size_t i=1; i < tam_vector; i++){
 
-            if (vct[j] > vct[j+1]){
-                aux = vct[j];
-                vct[j] = vct[j+1];
-                vct[j+1] = aux;
-            }
+        aux = vct[i];
+        anterior = i-1;
+
+        while (anterior >= 0 && vct[anterior] > aux){
+            vct[anterior + 1] = vct[anterior];
+            anterior--;
         }
+
+        vct[anterior + 1] = aux;    
     }
 }
 
@@ -46,7 +49,7 @@ int main(int argc, char *argv[]){
 
         tantes = clock();
 
-        orden_burbuja(vector_enteros);
+        orden_insercion(vector_enteros);
 
         tdespues = clock();
 
