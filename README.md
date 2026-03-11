@@ -15,9 +15,14 @@ memoria/    Memoria final de la práctica
 
 ## Cómo reproducir los resultados
 ### 1. Compilación
-(makefile)
+```make all`` para copmilar todos los ficheros.
 ### 2. Generación de datos empíricos 
-(.sh de medición)
+```./scripts/medicion.sh``` ejecuta alguno de los programas y graba los datos en la carpeta data. Acepta los siguientes parámetros:
+* **programa**: programa a ejecutar (ej: ./bin/burbuja)
+* **inicio**: inicio del intervalo de valores a dar
+* **fin**: final del intervalo de valores a dar
+* **incremento**: diferencia entre número de elementos ejecutados
+
 ### 3. Creación de gráficas y ajuste híbrido
 (.sh de gnuplot)
 
