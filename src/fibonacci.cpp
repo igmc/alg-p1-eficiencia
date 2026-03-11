@@ -19,17 +19,13 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    unsigned long int semilla;
-    semilla = atoi(argv[1]);
-    srand(semilla); // Inicializamos generador de no. aleatorios
-
     int n = atoi(argv[2]);
 
     std::chrono::high_resolution_clock::time_point t0, tf;
     std::chrono::duration<double> duracion;
 
     t0 = std::chrono::high_resolution_clock::now();
-    unsigned int result = Fibonacci(n);
+    Fibonacci(n);
     tf = std::chrono::high_resolution_clock::now();
 
     duracion = std::chrono::duration_cast<std::chrono::duration<double>>(tf - t0);
