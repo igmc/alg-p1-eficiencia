@@ -14,12 +14,12 @@ unsigned int Fibonacci(unsigned int n){
 }
 
 int main(int argc, char **argv) {
-    if (argc != 3) {
-        cerr << "Uso: " << argv[0] << " <semilla> <n>\n";
+    if (argc != 2) {
+        cerr << "Uso: " << argv[0] << " <n>\n";
         return EXIT_FAILURE;
     }
 
-    int n = atoi(argv[2]);
+    int n = atoi(argv[1]);
 
     std::chrono::high_resolution_clock::time_point t0, tf;
     std::chrono::duration<double> duracion;
