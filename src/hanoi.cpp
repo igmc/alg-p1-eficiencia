@@ -28,12 +28,12 @@ void Hanoi(unsigned int n,
 
 
 int main(int argc, char **argv) {
-    if (argc != 2) {
-        cerr << "Uso: " << argv[0] << " <n>\n";
+    if (argc != 3) {
+        cerr << "Uso: " << argv[0] << " <semilla (no usado)> <n>\n";
         return EXIT_FAILURE;
     }
 
-    int n = atoi(argv[1]);
+    int n = atoi(argv[2]);
     stack<int> origen, destino, auxiliar;
     for (unsigned int i = n; i > 0; i--){ origen.push(i); }
     
