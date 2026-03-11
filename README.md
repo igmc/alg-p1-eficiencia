@@ -15,7 +15,7 @@ memoria/    Memoria final de la práctica
 
 ## Cómo reproducir los resultados
 ### 1. Compilación
-```make all`` para copmilar todos los ficheros.
+`make all` para copmilar todos los ficheros.
 ### 2. Generación de datos empíricos 
 ```./scripts/medicion.sh``` ejecuta alguno de los programas y graba los datos en la carpeta data. Acepta los siguientes parámetros:
 * **programa**: programa a ejecutar (ej: ./bin/burbuja)
