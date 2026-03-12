@@ -1,6 +1,6 @@
 # directorios y compilador configurables
 CXX      := g++
-CXXFLAGS := -std=c++11 -Wall
+CXXFLAGS := -std=c++11 -O0 -Wall
 SRC_DIR  := src
 BIN_DIR  := bin
 
@@ -13,7 +13,7 @@ all: $(PROGRAMS)
 
 # cada programa se construye a partir de la fuente homónima
 $(BIN_DIR)/%: $(SRC_DIR)/%.cpp | $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) $(if $(filter fibonacci, $*),-O0,-O2) $< -o $@
+	$(CXX) $(CXXFLAGS) $< -o $@
 
 # asegurarnos de que el directorio de bin existe
 $(BIN_DIR):
