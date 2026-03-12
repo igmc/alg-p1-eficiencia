@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include <chrono>
 #include <iostream>
+#include <stack>
+
 using namespace std;
 
 void Hanoi(unsigned int n,
