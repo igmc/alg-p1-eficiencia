@@ -1,6 +1,8 @@
 bin/*
 !bin/.gitkeep
 *.dat
+*/.DS_Store
+.DS_Store
 
 # Prerequisites
 *.d
