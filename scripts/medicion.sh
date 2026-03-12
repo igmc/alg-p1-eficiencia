@@ -32,7 +32,7 @@ mkdir -p $(dirname $salida)
 touch $salida
 
 while [ $i -le $fin ]; do
-    $ejecutable $tam_semilla $i >> $salida
+    $ejecutable $tam_semilla $i | tee -a $salida
     (( i += incremento ))
 done
 
