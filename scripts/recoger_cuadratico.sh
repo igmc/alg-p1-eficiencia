@@ -15,8 +15,8 @@ programas=(
     burbuja
     insercion
     seleccion
-    shellshort
-    shellshort_peor
+    shellsort
+    shellsort_peor
     quicksort_peor)
 
 # lanzar la medición
