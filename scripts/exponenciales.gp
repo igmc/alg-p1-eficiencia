@@ -1,28 +1,59 @@
-set title "Algoritmos Exponenciales" font ",16"
-set xlabel "n" font ",12"
-set ylabel "Tiempo (s)" font ",12"
-set term pngcairo size 900,600 enhanced font "Sans,11"
-set output "figures/exponenciales.png"
+# configurar formato de exportado y tamaño
+
+set terminal pdfcairo size 5, 3.6 enhanced font "Latin Modern Roman,12" \
+    background "#FAFAF8"
+
+set output "figures/exponenciales.pdf"
+
+# titulos
+set title  "Algoritmos Exponenciales" font "Latin Modern Roman Bold,17" \
+    offset 0,0.8
+set xlabel "n"          font "Latin Modern Roman,13" offset 0,-0.5
+set ylabel "Tiempo (s)" font "Latin Modern Roman,13" offset -1,0
+
+# ejes y escala
 set logscale y
-set format y "%.1e"
-set fit logfile '/dev/null'
-set grid
-set key top left
+set format y "10^{%L}"      # clean superscript notation
+set xtics font "Latin Modern Roman,11"
+set ytics font "Latin Modern Roman,11"
 
-set style line 1 lc rgb "#E74C3C" pt 7 ps 0.8 lw 2
-set style line 2 lc rgb "#C0392B" lw 2 dt 2
-set style line 3 lc rgb "#3498DB" pt 7 ps 0.8 lw 2
-set style line 4 lc rgb "#2980B9" lw 2 dt 2
+# margenes
+set lmargin 10
+set rmargin  6
+set tmargin  4
+set bmargin  5
 
+# bordes
+set border 3 lw 1.2 lc rgb "#555555"
+set tics nomirror
+
+# cuadricula
+set grid xtics ytics lt 0 lc rgb "#CCCCBB" lw 0.8   # subtle dotted
+
+# clave
+set key top left spacing 1.4 font "Latin Modern Roman,11" \
+    box lc rgb "#AAAAAA" lw 0.8 samplen 3.5
+
+# estilos de puntos y lineas
+# hanoi
+set style line 1 lc rgb "#C0392B" pt 6 ps 0.5 lw 1.5   # hollow circle
+set style line 2 lc rgb "#E05C4B" lw 2.2 dt (10,4)
+
+# fibonacci
+set style line 3 lc rgb "#2471A3" pt 8 ps 0.5 lw 1.5   # hollow square
+set style line 4 lc rgb "#5499C7" lw 2.2 dt (10,4)
+
+# ajuste
+set fit logfile '/dev/null' quiet
 phi = (1 + sqrt(5)) / 2
+f_hanoi(x) = a * 2.0**x
+f_fibo(x)  = b * phi**x
+fit f_hanoi(x) 'data/hanoi.dat'     via a
+fit f_fibo(x)  'data/fibonacci.dat' via b
 
-f_hanoi(x) = a * 2**x
-f_fibo(x) = b * phi**x
-
-fit f_hanoi(x) 'data/hanoi.dat' via a
-fit f_fibo(x) 'data/fibonacci.dat' via b
-
-plot 'data/hanoi.dat'    with points ls 1 title 'Datos Hanoi', \
-     f_hanoi(x)          with lines  ls 2 title 'Ajuste Hanoi (2^n)', \
-     'data/fibonacci.dat' with points ls 3 title 'Datos Fibonacci', \
-     f_fibo(x)           with lines  ls 4 title 'Ajuste Fibonacci (φ^n)'
+# graficar
+plot \
+  'data/hanoi.dat'     u 1:2 w points ls 1 title 'Hanoi (datos)', \
+  f_hanoi(x)                 w lines  ls 2 title 'Ajuste Hanoi  2^n', \
+  'data/fibonacci.dat' u 1:2 w points ls 3 title 'Fibonacci (datos)', \
+  f_fibo(x)                  w lines  ls 4 title 'Ajuste Fibonacci  {/Symbol j}^n'
