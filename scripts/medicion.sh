@@ -29,7 +29,7 @@ i=$inicio
 mkdir -p $(dirname $salida)
 
 # asegurar que el archivo de salida existe para que el append funcione
-touch $salida
+echo "" > $salida
 
 while [ $i -le $fin ]; do
     $ejecutable $tam_semilla $i | tee -a $salida
