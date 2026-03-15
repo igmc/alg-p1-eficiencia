@@ -48,12 +48,18 @@ set fit logfile '/dev/null' quiet
 phi = (1 + sqrt(5)) / 2
 f_hanoi(x) = a * 2.0**x
 f_fibo(x)  = b * phi**x
-fit f_hanoi(x) 'data/hanoi.dat'     via a
-fit f_fibo(x)  'data/fibonacci.dat' via b
+fit f_hanoi(x) 'data/hanoi.dat'      every ::1 via a
+fit f_fibo(x)  'data/fibonacci.dat'  every ::1 via b
 
 # graficar
 plot \
-  'data/hanoi.dat'     u 1:2 w points ls 1 title 'Hanoi (datos)', \
+  'data/hanoi.dat' every ::1 u 1:2 w points ls 1 title 'Hanoi (datos)', \
   f_hanoi(x)                 w lines  ls 2 title 'Ajuste Hanoi  2^n', \
-  'data/fibonacci.dat' u 1:2 w points ls 3 title 'Fibonacci (datos)', \
+  'data/fibonacci.dat' every ::1 u 1:2 w points ls 3 title 'Fibonacci (datos)', \
   f_fibo(x)                  w lines  ls 4 title 'Ajuste Fibonacci  {/Symbol j}^n'
+
+# guardar ajuste
+set print "./memoria/params_exponenciales.tex"
+print sprintf("\\newcommand{\\paramHanoi}{\\num{%g}}", a)
+print sprintf("\\newcommand{\\paramFibonacci}{\\num{%g}}", b)
+set print
