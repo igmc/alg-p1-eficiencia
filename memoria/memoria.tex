@@ -1,0 +1,118 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[12pt]{article}
+
+\usepackage[spanish]{babel}
+\usepackage[a4paper, margin=1in, textwidth=7in]{geometry} % Adjusting the textwidth and margins
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb,siunitx,graphicx,icomma,parskip,mathtools,placeins,cancel}
+\usepackage[hidelinks]{hyperref}
+ 
+% Define un contador para los enunciados
+\newcounter{pregun}
+\newcounter{ejer}
+
+% Define el entorno pregunta
+\newenvironment{pregunta}[1][Cuestión]{%
+    \refstepcounter{pregun} % Incrementa el contador y lo hace referenciable
+    \begin{quote} \textit{\textbf{#1 \thepregun.}} % Inicio del bloque tipo cita
+}{
+    \end{quote} % Fin del bloque tipo cita
+    \vspace{0.5em} % Espacio después del enunciado
+}
+
+\newenvironment{ejercicio}[1][]{\refstepcounter{ejer}\begin{quote}\textit{\textbf{#1 \theejer. }}}{\end{quote}\vspace{0em}}
+
+% Define el entorno answer
+\newenvironment{respuesta}{%
+    \par % Mirar despues si queda bien el nuevo parrafo
+    \noindent % El contenido en formato normal
+    \ignorespaces
+}{%
+    \vspace{1.5em} % Espacio después de la respuesta
+}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\usepackage{booktabs} % for nicer table rules
+
+% cargar datos de las mediciones
+% cuadratico
+\pgfplotstableread[col sep=space,header=true]{../data/burbuja.dat}\burbujadata
+\pgfplotstableread[col sep=space,header=true]{../data/insercion.dat}\inserciondata
+\pgfplotstableread[col sep=space,header=true]{../data/seleccion.dat}\selecciondata
+\pgfplotstableread[col sep=space,header=true]{../data/shellsort.dat}\shellsortdata
+\pgfplotstableread[col sep=space,header=true]{../data/shellsort_peor.dat}\shellsortpeordata
+\pgfplotstableread[col sep=space,header=true]{../data/quicksort_peor.dat}\quicksortpeordata
+
+% n log n
+%\pgfplotstableread[col sep=space,header=true]{../data/mergesort.dat}\mergesortdata
+%\pgfplotstableread[col sep=space,header=true]{../data/heapsort.dat}\heapsortdata
+%\pgfplotstableread[col sep=space,header=true]{../data/heapsort_peor.dat}\heapsortpeordata
+%\pgfplotstableread[col sep=space,header=true]{../data/quicksort.dat}\quicksortdata
+
+% exponenciales
+\pgfplotstableread[col sep=space,header=true]{../data/hanoi.dat}\hanoidata
+\pgfplotstableread[col sep=space,header=true]{../data/fibonacci.dat}\fibonaccidata
+
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+
+% importar los valores de ajuste hibrido
+\input{params_exponenciales.tex}
+\input{params_cuadraticos.tex}
+\input{params_logaritmicos.tex}
+
+
+\title{Práctica 1: cálculo de eficiencia de algoritmos}
+\author{Juan Ignacio Molina Cobo \\ etc}
+
+\date{}
+
+\maketitle
+
+\section{Introducción}
+
+A continuación se plasman los resultados de elaborar la Práctica 1 de la asignatura.
+Vamos a trabajar con los algoritmos propuestos (varios de ordenación, Hanoi, Fibonacci).
+Para cada uno de ellos mostramos su eficiencia empírica a través de los tiempos de ejecución
+de cada uno de ellos. Representaremos gráficamente estos datos y aplicaremos un modelo de ajuste
+para calcular la eficiencia híbrida de cada uno de los algoritmos. El susodicho proceso se realizará
+agrupando a los algoritmos en función de su eficiencia teórica. Adicionalmente, compararemos todos
+los algoritmos de ordenación, independientemente de sus órdenes de eficiencia.
+
+A la hora de agrupar, hemos diferenciado los casos promedio y peor de Quicksort. Mientras que el
+primero lo hemos incluido dentro de los algoritmos $O(n \cdot\log n)$, el segundo lo hemos
+includio dentro de $O(n^2)$.
+
+Nota: esta memoria, así como los códigos fuente y scripts empleados y suficientes
+para recrear los resultados aquí plasmados, es recuperable en https://www.github.com/igmc/p1-alg-eficiencia
+
+\section{Cálculo de la eficiencia empírica}
+
+\subparagraph{Algoritmos pertenecientes al orden $O(n^2)$}
+
+
+Hemos elaborado un script shell para lanzar y recoger las mediciones para cada
+uno de los algoritmos implementados. A continuación se muestran las tablas
+mostrando, para cada orden de eficiencia, las mediciones obtenidas para cada 
+algoritmo.
+
+\input{tabla_cuadratica}
+\input{tabla_exponencial.tex}
+y ahora
+ \paramHanoi
+% --------------------------------------------------------------
+%     You don't have to mess with anything below this line.
+% --------------------------------------------------------------
+ 
+\end{document}
