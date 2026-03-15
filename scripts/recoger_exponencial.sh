@@ -9,7 +9,7 @@ fibo="$bin_dir/fibonacci"
 hanoi="$bin_dir/hanoi"
 
 # parámetros de medición para fibonacci
-inicio_fibonacci=10
+inicio_fibonacci=3
 fin_fibonacci=35
 incremento_fibonacci=1
 
