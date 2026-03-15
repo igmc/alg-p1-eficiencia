@@ -28,8 +28,8 @@ i=$inicio
 # asegurar que existe el directorio de salida
 mkdir -p $(dirname $salida)
 
-# asegurar que el archivo de salida existe para que el append funcione
-echo "" > $salida
+# asegurar que el archivo de salida existe, vaciar y añadir cabecera de columnas
+echo "n t_$(basename $ejecutable)" > $salida
 
 while [ $i -le $fin ]; do
     $ejecutable $tam_semilla $i | tee -a $salida
