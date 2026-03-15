@@ -3,6 +3,9 @@ bin/*
 *.dat
 */.DS_Store
 .DS_Store
+memoria/*
+!memoria/*.tex
+
 
 # Prerequisites
 *.d
