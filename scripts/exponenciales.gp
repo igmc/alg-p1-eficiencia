@@ -1,3 +1,6 @@
+# script para graficar la eficiencia de algoritmos exponenciales
+# autor: Juan Ignacio Molina
+
 # configurar formato de exportado y tamaño
 
 set terminal pdfcairo size 5, 3.6 enhanced font "Latin Modern Roman,12" \

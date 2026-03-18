@@ -1,3 +1,6 @@
+# script para graficar la eficiencia de algoritmos loglineales
+# autor: Juan Ignacio Molina
+
 # configurar formato de exportado y tamaño
 
 set terminal pdfcairo size 5, 3.6 enhanced font "Latin Modern Roman,12" \
@@ -12,7 +15,7 @@ set xlabel "n"          font "Latin Modern Roman,13" offset 0,-0.5
 set ylabel "Tiempo (s)" font "Latin Modern Roman,13" offset -1,0
 
 # ejes y escala
-set logscale y
+
 set format y "10^{%L}"      # clean superscript notation
 set xtics font "Latin Modern Roman,11"
 set ytics font "Latin Modern Roman,11"
@@ -54,10 +57,10 @@ set style line 8 lc rgb "#5499C7" lw 2.2 dt (10,4)
 
 # ajuste
 set fit logfile '/dev/null' quiet
-f_merge(x) = a * log(x)
-f_merge_peor(x) = b * log(x)
-f_heap(x) = c * log(x)
-f_quick(x) = d * log(x)
+f_merge(x) = a * x * log(x)
+f_merge_peor(x) = b * x * log(x)
+f_heap(x) = c * x * log(x)
+f_quick(x) = d * x * log(x)
 fit f_merge(x) 'data/mergesort.dat'      every ::1 via a
 fit f_merge_peor(x)  'data/mergesort_peor.dat'  every ::1 via b
 fit f_heap(x)  'data/heapsort.dat'  every ::1 via c
@@ -73,7 +76,7 @@ plot \
   'data/heapsort.dat' every ::1 u 1:2 w points ls 5 title 'Heapsort (datos)', \
   f_heap(x)                  w lines  ls 6 title 'Ajuste Heapsort', \
   'data/quicksort.dat' every ::1 u 1:2 w points ls 7 title 'Quicksort (datos)', \
-  f_quick(x)                  w lines  ls 8 title 'Ajuste Quicksort', \
+  f_quick(x)                  w lines  ls 8 title 'Ajuste Quicksort' \
 
 
 # guardar ajuste

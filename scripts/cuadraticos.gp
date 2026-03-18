@@ -1,3 +1,7 @@
+# script para graficar la eficiencia de algoritmos cuadráticos
+# autor: Juan Ignacio Molina
+
+
 set title "Algoritmos Cuadráticos" font ",16"
 set xlabel "n" font ",12"
 set ylabel "Tiempo (s)" font ",12"
