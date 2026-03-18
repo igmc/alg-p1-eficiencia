@@ -1,3 +1,6 @@
+// Implementación del algoritmo de ordenación por quicksort
+// Autor: Iván Mestre Redondo
+
 #include <iostream>
 #include <ctime>
 #include <vector>
