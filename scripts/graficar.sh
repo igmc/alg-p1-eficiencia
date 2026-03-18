@@ -14,3 +14,5 @@ mkdir -p $output_dir
 gnuplot "$script_dir/exponenciales.gp"
 gnuplot "$script_dir/cuadraticos.gp"
 gnuplot "$script_dir/logaritmicos.gp"
+gnuplot "$script_dir/shellsort.gp"
+gnuplot "$script_dir/ordenacion.gp"
