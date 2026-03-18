@@ -1,51 +1,58 @@
 % Juntar los datos de las distintas tablas de O(n^2)
 
+\pgfplotstablecopy{\burbujadata}\to{\cuadraticadata}
+
 \pgfplotstablecreatecol[copy column from table={\inserciondata}{t_insercion}]
-  {t_insercion}{\burbujadata}
+  {t_insercion}{\cuadraticadata}
 \pgfplotstablecreatecol[copy column from table={\selecciondata}{t_seleccion}]
-  {t_seleccion}{\burbujadata}
+  {t_seleccion}{\cuadraticadata}
 \pgfplotstablecreatecol[copy column from table={\shellsortdata}{t_shellsort}]
-  {t_shellsort}{\burbujadata}
+  {t_shellsort}{\cuadraticadata}
 \pgfplotstablecreatecol[copy column from table={\shellsortpeordata}{t_shellsort_peor}]
-  {t_shellsort_peor}{\burbujadata}
+  {t_shellsort_peor}{\cuadraticadata}
 \pgfplotstablecreatecol[copy column from table={\quicksortpeordata}{t_quicksort_peor}]
-  {t_quicksort_peor}{\burbujadata}
+  {t_quicksort_peor}{\cuadraticadata}
 
 \sisetup{group-separator={}, group-minimum-digits=4}
 
-% Table
-\pgfplotstabletypeset[
-  columns={n, t_burbuja, t_insercion, t_seleccion, t_shellsort, t_shellsort_peor, t_quicksort_peor},
-columns/n/.style={
-  column name={$n$},
-  assign cell content/.code={
-    \pgfkeyssetvalue{/pgfplots/table/@cell content}{\num{##1}}
-  }
-},
-  columns/t_burbuja/.style={
-    column name={Burbuja},
-    fixed, precision=3
+% Mostrar tabla
+\begin{table}[htbp]
+  \centering
+  \pgfplotstabletypeset[
+    columns={n, t_burbuja, t_insercion, t_seleccion, t_shellsort, t_shellsort_peor, t_quicksort_peor},
+  columns/n/.style={
+    column name={$n$},
+    assign cell content/.code={
+      \pgfkeyssetvalue{/pgfplots/table/@cell content}{\num{##1}}
+    }
   },
-  columns/t_insercion/.style={
-    column name={Insercion},
-    fixed, precision=3
-  },
-  columns/t_seleccion/.style={
-    column name={Seleccion},
-    fixed, precision=3
-  },
-  columns/t_shellsort/.style={
-    column name={Shellsort},
-    fixed, precision=3
-  },
-  columns/t_shellsort_peor/.style={
-    column name={SS peor},
-    fixed, precision=3
-  },
-  columns/t_quicksort_peor/.style={
-    column name={QS peor},
-    fixed, precision=3
-  },
-  every head row/.style={before row=\toprule, after row=\midrule},
-  every last row/.style={after row=\bottomrule},
-]{\burbujadata}
+    columns/t_burbuja/.style={
+      column name={Burbuja},
+      fixed, fixed zerofill, precision=3
+    },
+    columns/t_insercion/.style={
+      column name={Insercion},
+      fixed, fixed zerofill, precision=3
+    },
+    columns/t_seleccion/.style={
+      column name={Seleccion},
+      fixed, fixed zerofill, precision=3
+    },
+    columns/t_shellsort/.style={
+      column name={Shellsort},
+      fixed, fixed zerofill, precision=3
+    },
+    columns/t_shellsort_peor/.style={
+      column name={SS peor},
+      fixed, fixed zerofill, precision=3
+    },
+    columns/t_quicksort_peor/.style={
+      column name={QS peor},
+      fixed, fixed zerofill, precision=3
+    },
+    every head row/.style={before row=\toprule, after row=\midrule},
+    every last row/.style={after row=\bottomrule},
+  ]{\cuadraticadata}
+  \caption{tiempos de ejecución (s) de los algoritmos de orden $O(n^2).$}
+  \label{tab:cuadratica}
+\end{table}

@@ -1,24 +1,31 @@
 % Juntar los datos de las distintas tablas
 
+\pgfplotstablecopy{\fibonaccidata}\to{\exponencialdata}
+
 \pgfplotstablecreatecol[copy column from table={\hanoidata}{t_hanoi}]
-  {t_hanoi}{\fibonaccidata}
+  {t_hanoi}{\exponencialdata}
 
 \sisetup{group-separator={\ }, group-minimum-digits=4}
 
-% Table
-\pgfplotstabletypeset[
-  columns={n, t_fibonacci, t_hanoi},
-columns/n/.style={
-  column name={$n$}
-},
-  columns/t_hanoi/.style={
-    column name={Hanoi},
-    precision=3
+% Mostrar tabla
+\begin{table}[htbp]
+  \centering
+  \pgfplotstabletypeset[
+    columns={n, t_fibonacci, t_hanoi},
+  columns/n/.style={
+    column name={$n$}
   },
-  columns/t_fibonacci/.style={
-    column name={Fibonacci},
-    precision=3
-  },
-  every head row/.style={before row=\toprule, after row=\midrule},
-  every last row/.style={after row=\bottomrule},
-]{\fibonaccidata}
+    columns/t_hanoi/.style={
+      column name={Hanoi},
+      fixed, fixed zerofill, precision=5
+    },
+    columns/t_fibonacci/.style={
+      column name={Fibonacci},
+      fixed, fixed zerofill, precision=5
+    },
+    every head row/.style={before row=\toprule, after row=\midrule},
+    every last row/.style={after row=\bottomrule},
+  ]{\exponencialdata}
+  \caption{tiempos de ejecución (s) de los algoritmos de orden $O(c^2), c > 1.$}
+  \label{tab:exponencial}
+\end{table}

@@ -1,51 +1,46 @@
 % Juntar los datos de las distintas tablas de O(n log n)
 
-\pgfplotstablecreatecol[copy column from table={\inserciondata}{t_insercion}]
-  {t_insercion}{\burbujadata}
-\pgfplotstablecreatecol[copy column from table={\selecciondata}{t_seleccion}]
-  {t_seleccion}{\burbujadata}
-\pgfplotstablecreatecol[copy column from table={\shellsortdata}{t_shellsort}]
-  {t_shellsort}{\burbujadata}
-\pgfplotstablecreatecol[copy column from table={\shellsortpeordata}{t_shellsort_peor}]
-  {t_shellsort_peor}{\burbujadata}
-\pgfplotstablecreatecol[copy column from table={\quicksortpeordata}{t_quicksort_peor}]
-  {t_quicksort_peor}{\burbujadata}
+\pgfplotstablecopy{\mergesortdata}\to{\loglindata}
+
+\pgfplotstablecreatecol[copy column from table={\heapsortdata}{t_heapsort}]
+  {t_heapsort}{\loglindata}
+\pgfplotstablecreatecol[copy column from table={\heapsortpeordata}{t_heapsort_peor}]
+  {t_heapsort_peor}{\loglindata}
+\pgfplotstablecreatecol[copy column from table={\quicksortdata}{t_quicksort}]
+  {t_quicksort}{\loglindata}
 
 \sisetup{group-separator={\ }, group-minimum-digits=4}
 
-% Table
-\pgfplotstabletypeset[
-  columns={n, t_burbuja, t_insercion, t_seleccion, t_shellsort, t_shellsort_peor, t_quicksort_peor},
-columns/n/.style={
-  column name={$n$},
-  assign cell content/.code={
-    \pgfkeyssetvalue{/pgfplots/table/@cell content}{\num{##1}}
-  }
-},
-  columns/t_burbuja/.style={
-    column name={Burbuja},
-    fixed, precision=3
+% Mostrar tabla
+\begin{table}[htbp]
+  \centering
+  \pgfplotstabletypeset[
+    columns={n, t_mergesort, t_heapsort, t_heapsort_peor, t_quicksort},
+  columns/n/.style={
+    column name={$n$},
+    assign cell content/.code={
+      \pgfkeyssetvalue{/pgfplots/table/@cell content}{\num{##1}}
+    }
   },
-  columns/t_insercion/.style={
-    column name={Insercion},
-    fixed, precision=3
-  },
-  columns/t_seleccion/.style={
-    column name={Seleccion},
-    fixed, precision=3
-  },
-  columns/t_shellsort/.style={
-    column name={Shellsort},
-    fixed, precision=3
-  },
-  columns/t_shellsort_peor/.style={
-    column name={Shellsort peor},
-    fixed, precision=3
-  },
-  columns/t_quicksort_peor/.style={
-    column name={Quicksortpeor},
-    fixed, precision=3
-  },
-  every head row/.style={before row=\toprule, after row=\midrule},
-  every last row/.style={after row=\bottomrule},
-]{\burbujadata}
+    columns/t_mergesort/.style={
+      column name={Mergesort},
+      fixed, fixed zerofill, precision=3
+    },
+    columns/t_heapsort/.style={
+      column name={Heapsort},
+      fixed, fixed zerofill, precision=3
+    },
+    columns/t_heapsort_peor/.style={
+      column name={Heapsort (peor caso)},
+      fixed, fixed zerofill, precision=3
+    },
+    columns/t_quicksort/.style={
+      column name={Quicksort},
+      fixed, fixed zerofill, precision=3
+    },
+    every head row/.style={before row=\toprule, after row=\midrule},
+    every last row/.style={after row=\bottomrule},
+  ]{\loglindata}
+  \caption{tiempos de ejecución (s) de los algoritmos de orden $O(n\log{n})$.}
+  \label{tab:nlog}
+\end{table}
