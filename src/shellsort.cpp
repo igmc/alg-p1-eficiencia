@@ -15,7 +15,7 @@
 // Asignatura: Algorítmica - Grupo de Prácticas: A2
 
 #include <iostream>
-#include <ctime>
+#include <chrono>
 #include <vector>
 #include <cstdlib>
 
@@ -46,8 +46,8 @@ int main(int argc, char *argv[]){
 
     srand(atoi(argv[1]));
 
-    clock_t tantes;
-    clock_t tdespues;
+    std::chrono::high_resolution_clock::time_point t0, tf;
+	std::chrono::duration<double> duracion;
 
     vector<int> vector_enteros;
 
@@ -58,15 +58,15 @@ int main(int argc, char *argv[]){
         vector_enteros.push_back(rand() % tamanio + 1);         
     }
 
-    tantes = clock();
+    t0= std::chrono::high_resolution_clock::now(); 
 
     orden_shellsort(vector_enteros);
 
-    tdespues = clock();
+    tf= std::chrono::high_resolution_clock::now();
 
-    double tiempo = (double)(tdespues - tantes) / CLOCKS_PER_SEC;
+    duracion = std::chrono::duration_cast<std::chrono::duration<double>>(tf - t0);
 
-    cout << tamanio << " " << tiempo << endl;    
+    cout << tamanio << " " << duracion.count() << endl;    
 
     return 0;
 }
