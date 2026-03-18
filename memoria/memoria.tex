@@ -8,39 +8,12 @@
 \usepackage[spanish]{babel}
 \usepackage[a4paper, margin=1in, textwidth=7in]{geometry} % Adjusting the textwidth and margins
  
-\usepackage[margin=1in]{geometry} 
-\usepackage{amsmath,amsthm,amssymb,siunitx,graphicx,icomma,parskip,mathtools,placeins,cancel}
+\usepackage{amsmath,amssymb,siunitx,graphicx,icomma,parskip,placeins}
 \usepackage[hidelinks]{hyperref}
- 
-% Define un contador para los enunciados
-\newcounter{pregun}
-\newcounter{ejer}
-
-% Define el entorno pregunta
-\newenvironment{pregunta}[1][Cuestión]{%
-    \refstepcounter{pregun} % Incrementa el contador y lo hace referenciable
-    \begin{quote} \textit{\textbf{#1 \thepregun.}} % Inicio del bloque tipo cita
-}{
-    \end{quote} % Fin del bloque tipo cita
-    \vspace{0.5em} % Espacio después del enunciado
-}
-
-\newenvironment{ejercicio}[1][]{\refstepcounter{ejer}\begin{quote}\textit{\textbf{#1 \theejer. }}}{\end{quote}\vspace{0em}}
-
-% Define el entorno answer
-\newenvironment{respuesta}{%
-    \par % Mirar despues si queda bien el nuevo parrafo
-    \noindent % El contenido en formato normal
-    \ignorespaces
-}{%
-    \vspace{1.5em} % Espacio después de la respuesta
-}
-
-\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
-
-\usepackage{pgfplots}
-\usepackage{pgfplotstable}
+\sisetup{group-digits=false}
+\usepackage{pgfplots, pgfplotstable}
 \usepackage{booktabs} % for nicer table rules
+\pgfplotsset{compat=1.18}
 
 % cargar datos de las mediciones
 % cuadratico
@@ -52,10 +25,10 @@
 \pgfplotstableread[col sep=space,header=true]{../data/quicksort_peor.dat}\quicksortpeordata
 
 % n log n
-%\pgfplotstableread[col sep=space,header=true]{../data/mergesort.dat}\mergesortdata
-%\pgfplotstableread[col sep=space,header=true]{../data/heapsort.dat}\heapsortdata
-%\pgfplotstableread[col sep=space,header=true]{../data/heapsort_peor.dat}\heapsortpeordata
-%\pgfplotstableread[col sep=space,header=true]{../data/quicksort.dat}\quicksortdata
+\pgfplotstableread[col sep=space,header=true]{../data/mergesort.dat}\mergesortdata
+\pgfplotstableread[col sep=space,header=true]{../data/heapsort.dat}\heapsortdata
+\pgfplotstableread[col sep=space,header=true]{../data/heapsort_peor.dat}\heapsortpeordata
+\pgfplotstableread[col sep=space,header=true]{../data/quicksort.dat}\quicksortdata
 
 % exponenciales
 \pgfplotstableread[col sep=space,header=true]{../data/hanoi.dat}\hanoidata
@@ -71,46 +44,273 @@
 \input{params_exponenciales.tex}
 \input{params_cuadraticos.tex}
 \input{params_logaritmicos.tex}
+\input{params_shellsort_hibrido.tex}
 
-
-\title{Práctica 1: cálculo de eficiencia de algoritmos}
-\author{Juan Ignacio Molina Cobo \\ etc}
-
-\date{}
+\title{Práctica 1: Cálculo de eficiencia de algoritmos}
+\author{%
+    \begin{tabular}[t]{c}
+        {\large Grado en Ingeniería Informática} \\[0.2em]
+        {\normalsize Algorítmica $\cdot$ Subgrupo A2} \\[1em]
+        \textbf{Autores\footnote{Porcentaje de participación de cada integrante: 
+        25\% cada uno. En comentarios, cada archivo del proyecto indica su autoría.}\ :} \\[0.3em]
+        \begin{tabular}[t]{r @{, } l}
+            López Lozano   & Francisco Javier \\[0.5em]
+            Martos Molina  & Enrique          \\[0.5em]
+            Mestre Redondo & Iván             \\[0.5em]
+            Molina Cobo    & Juan Ignacio
+        \end{tabular}
+    \end{tabular}%
+}
+\date{Marzo de 2026}
 
 \maketitle
 
 \section{Introducción}
 
-A continuación se plasman los resultados de elaborar la Práctica 1 de la asignatura.
-Vamos a trabajar con los algoritmos propuestos (varios de ordenación, Hanoi, Fibonacci).
-Para cada uno de ellos mostramos su eficiencia empírica a través de los tiempos de ejecución
-de cada uno de ellos. Representaremos gráficamente estos datos y aplicaremos un modelo de ajuste
-para calcular la eficiencia híbrida de cada uno de los algoritmos. El susodicho proceso se realizará
-agrupando a los algoritmos en función de su eficiencia teórica. Adicionalmente, compararemos todos
-los algoritmos de ordenación, independientemente de sus órdenes de eficiencia.
+En esta práctica se analiza el comportamiento empírico de nueve algoritmos clásicos:
+los algoritmos de ordenación por inserción, selección, burbuja y shellsort, de eficiencia
+teórica $O(n^2)$; mergesort y heapsort, de eficiencia $O(n\log{n})$;
+quicksort, con eficiencia media $\Theta(n\log{n})$ y peor caso $O(n^2)$;
+el algoritmo recursivo de Fibonacci, de orden $O(\varphi^n)$ con $\varphi\approx1,618$; y
+el algoritmo de las Torres de Hanoi, de orden $O(2^n)$.
 
-A la hora de agrupar, hemos diferenciado los casos promedio y peor de Quicksort. Mientras que el
-primero lo hemos incluido dentro de los algoritmos $O(n \cdot\log n)$, el segundo lo hemos
-includio dentro de $O(n^2)$.
+Para cada algoritmo se han medido los tiempos de ejecución sobre distintos tamaños
+de entrada, se han generado ajustes híbridos al término dominante de su eficiencia
+teórica y se han comparado los resultados entre algoritmos de mismo orden.
 
-Nota: esta memoria, así como los códigos fuente y scripts empleados y suficientes
-para recrear los resultados aquí plasmados, es recuperable en https://www.github.com/igmc/p1-alg-eficiencia
+Todas las mediciones se han realizado en el siguiente entorno:
+\begin{itemize}
+    \item \textbf{Procesador}: Apple M2, 8 núcleos, 3,5 GHz, arquitectura ARM
+    \item \textbf{Memoria}: 8 GB (caché L1 64 KB, L2 4 MB)
+    \item \textbf{Sistema operativo}: macOS 26.3.1 Tahoe
+    \item \textbf{Compilador}: \texttt{g++ -std=c++11 -O0}
+\end{itemize}
 
-\section{Cálculo de la eficiencia empírica}
+Nota: esta memoria, así como los códigos fuente y scripts empleados para recrear
+los resultados, está disponible en \url{https://github.com/igmc/alg-p1-eficiencia}.
 
-\subparagraph{Algoritmos pertenecientes al orden $O(n^2)$}
+\section{Eficiencia empírica}
 
+\textbf{Metodología:} Los tiempos de ejecución han sido recogidos mediante un
+script \texttt{shell} que lanza cada algoritmo sobre vectores de tamaño creciente
+y registra el tiempo de CPU empleado. Para cada tamaño de entrada se ha realizado
+una única medición. Los algoritmos de distinto orden de eficiencia se han ejecutado
+en tablas separadas dado que sus rangos de $n$ difieren significativamente.
 
-Hemos elaborado un script shell para lanzar y recoger las mediciones para cada
-uno de los algoritmos implementados. A continuación se muestran las tablas
-mostrando, para cada orden de eficiencia, las mediciones obtenidas para cada 
-algoritmo.
+\subsection{Algoritmos cuadráticos}
 
-\input{tabla_cuadratica}
+El Cuadro~\ref{tab:cuadratica} recoge los tiempos de ejecución de los algoritmos
+de orden cuadrático para tamaños de entrada entre 8000 y 200000.
+
+\input{tabla_cuadratica.tex}
+
+La Figura~\ref{fig:cuadratica} muestra la comparativa gráfica de los cinco algoritmos.
+Los tiempos de inserción, selección y burbuja presentan la pendiente característica
+de orden 2 en escala log-log, en concordancia con su eficiencia teórica.
+
+Se incluye asimismo el peor caso de quicksort en esta tabla, pese a que su 
+eficiencia en caso promedio es $\Theta(n \log n)$. Esta decisión se justifica 
+porque el peor caso de quicksort es $O(n^2)$, por lo que su comportamiento 
+en dicho caso es comparable al del resto de algoritmos cuadráticos y resulta 
+más informativo incluirlo aquí que en la tabla loglineal.
+
+Shellsort, pese a ser teóricamente $O(n^2)$, muestra un comportamiento empírico
+considerablemente mejor, próximo a $O(n^{1{,}5})$ o $O(n\log^2 n)$ según la
+secuencia de gaps empleada. Esto explica el mal ajuste cuadrático observado.
+La Figura~\ref{fig:shellsort} compara dicho ajuste con uno de la forma
+$f(x) = a \cdot x^\alpha$, obteniendo $\alpha = \alphaShellsort$.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{../figures/cuadraticos.pdf}
+    \caption{Tiempos de ejecución de los algoritmos de orden $O(n^2)$ (escala log-log).}
+    \label{fig:cuadratica}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{../figures/shellsort.pdf}
+    \caption{Comparación de ajustes para shellsort (escala lineal).}
+    \label{fig:shellsort}
+\end{figure}
+
+\subsection{Algoritmos loglineales}
+
+El Cuadro~\ref{tab:nlog} recoge los tiempos de ejecución de los algoritmos
+de orden $O(n \log n)$ para tamaños de entrada entre 500000 y 5000000.
+
+\input{tabla_nlog.tex}
+
+La Figura~\ref{fig:nlog} muestra la comparativa gráfica de los cuatro algoritmos.
+En condiciones promedio, mergesort es el más eficiente en tiempo, seguido de
+quicksort y heapsort en un rango próximo entre sí. Destaca, sin embargo, la
+diferencia entre el caso promedio y el peor caso de mergesort, que se separa
+notablemente del resto de series. No se han medido los peores casos de quicksort
+y heapsort, por lo que no es posible establecer una comparativa completa entre
+casos extremos.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{../figures/logaritmicos.pdf}
+    \caption{Tiempos de ejecución de los algoritmos de orden $O(n \log n)$ (escala lineal).}
+    \label{fig:nlog}
+\end{figure}
+
+\subsection{Algoritmos exponenciales}
+
+El Cuadro~\ref{tab:exponencial} recoge los tiempos de ejecución de los algoritmos
+de orden exponencial para tamaños de entrada entre 3 y 33.
+
 \input{tabla_exponencial.tex}
-y ahora
- \paramHanoi
+
+La Figura~\ref{fig:exponencial} muestra la comparativa gráfica de ambos algoritmos
+en escala log-lineal. Los puntos empíricos se alinean con precisión sobre
+la curva ajustada para valores de $n$ suficientemente grandes, confirmando el
+crecimiento exponencial predicho por la teoría. Hanoi crece sensiblemente más
+rápido que Fibonacci, diferencia que refleja directamente la distancia entre
+las bases $2$ y $\varphi \approx 1{,}618$. Para $n$ pequeño se observa mayor
+dispersión respecto al ajuste, comportamiento esperable dado que el tiempo de
+ejecución está dominado por factores constantes del sistema más que por el
+término dominante.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{../figures/exponenciales.pdf}
+    \caption{Tiempos de ejecución de los algoritmos de orden exponencial
+             (escala log-lineal).}
+    \label{fig:exponencial}
+\end{figure}
+
+\section{Cálculo híbrido de la eficiencia}
+
+Para cada algoritmo se ha realizado un ajuste híbrido al término dominante de
+su eficiencia teórica, obteniendo una función de la forma $f(x) = a \cdot g(x)$
+donde $g(x)$ es el término dominante y $a$ es el coeficiente ajustado. Los
+ajustes se han realizado con gnuplot sobre los mismos datos empíricos de la
+sección anterior.
+
+\subsection{Algoritmos cuadráticos}
+
+Para los algoritmos de orden $O(n^2)$ se ha ajustado la función $f(x) = a \cdot x^2$.
+Los coeficientes obtenidos son los siguientes:
+
+\begin{itemize}
+    \item Inserción: $a = \paramInsercion$
+    \item Selección: $a = \paramSeleccion$
+    \item Burbuja: $a = \paramBurbuja$
+    \item Shellsort: $a = \paramShellsort$
+    \item Quicksort (peor caso): $a = \paramQuicksortPeor$
+\end{itemize}
+
+Los coeficientes de inserción, selección y burbuja son del mismo orden de
+magnitud, lo que es consistente con su comportamiento similar observado en
+la sección anterior. El coeficiente de quicksort en peor caso es comparable
+al de selección y burbuja, confirmando que su crecimiento cuadrático en dicho
+caso es real.
+
+El caso de shellsort es nuevamente destacable: el coeficiente ajustado
+$a = \paramShellsort$ es varios órdenes de magnitud menor que el del resto,
+reflejo directo de que la función $x^2$ sobreestima su
+crecimiento real. La Figura~\ref{fig:shellsort}, mostrada anteriormente
+en la sección de eficiencia empírica, ilustra esta discrepancia comparando el ajuste cuadrático con
+un ajuste libre de la forma $f(x) = a \cdot x^\alpha$, que produce $\alpha = \alphaShellsort$, valor
+próximo a $1{,}2$ y alejado del exponente teórico $2$. La mejora en la
+bondad del ajuste es notable: el coeficiente de determinación pasa de
+$R^2 = \rDosShellsortTeorico$ con el ajuste cuadrático a
+$R^2 = \rDosShellsortLibre$ con el ajuste libre.
+
+\subsection{Algoritmos loglineales}
+
+Para los algoritmos de orden $O(n \log n)$ se ha ajustado la función
+$f(x) = a \cdot x \log x$. Los coeficientes obtenidos son:
+
+\begin{itemize}
+    \item Mergesort: $a = \paramMergesort$
+    \item Mergesort (peor caso): $a = \paramMergesortPeor$
+    \item Heapsort: $a = \paramHeapsort$
+    \item Quicksort (promedio): $a = \paramQuicksort$
+\end{itemize}
+
+El coeficiente de mergesort en caso promedio es el menor del grupo, en
+concordancia con ser el más rápido en condiciones normales. El coeficiente
+de su peor caso es aproximadamente tres veces mayor, lo que cuantifica
+la degradación observada en la sección anterior. Heapsort y quicksort
+presentan coeficientes intermedios y próximos entre sí.
+
+\subsection{Algoritmos exponenciales}
+
+Para Hanoi y Fibonacci se han ajustado las funciones $f(x) = a \cdot 2^x$
+y $f(x) = a \cdot \varphi^x$ respectivamente, con $\varphi \approx 1{,}618$.
+Los coeficientes obtenidos son:
+
+\begin{itemize}
+    \item Hanoi: $a = \paramHanoi$
+    \item Fibonacci: $a = \paramFibonacci$
+\end{itemize}
+
+Ambos ajustes presentan una bondad elevada, como se aprecia en la
+Figura~\ref{fig:exponencial}, donde los puntos empíricos siguen con
+precisión las curvas ajustadas para valores de $n$ suficientemente grandes.
+
+\section{Comparativa global de ordenación}
+
+La Figura~\ref{fig:comparativa} muestra los tiempos de ejecución de todos los
+algoritmos de ordenación sobre un rango común de tamaños de entrada entre 8000
+y 200000, permitiendo apreciar directamente las diferencias entre órdenes de
+eficiencia.
+
+La separación entre algoritmos $O(n^2)$ y $O(n \log n)$ es clara: mergesort,
+heapsort y quicksort en caso promedio presentan tiempos significativamente
+menores que los algoritmos cuadráticos en todo el rango, con inserción,
+selección y burbuja creciendo varios órdenes de magnitud por encima. Esto
+ilustra de forma empírica la ventaja práctica de los algoritmos loglineales
+frente a los cuadráticos a partir de tamaños de entrada moderados.
+
+Los peores casos de quicksort y heapsort muestran una degradación notable
+respecto a sus casos promedio, llegando a superar a los algoritmos cuadráticos
+para $n$ suficientemente grande. Así, queda de manifiesto que la eficiencia
+teórica en caso promedio no garantiza un buen rendimiento en todos los escenarios.
+
+Shellsort presenta tiempos muy reducidos en ambas series: caso promedio y peor
+caso. Esto confirma lo discutido en la sección anterior; el vector en orden
+decreciente no constituye el peor caso real para la secuencia de gaps empleada,
+y el algoritmo lo resuelve de forma casi óptima.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{../figures/comparativa_ordenacion.pdf}
+    \caption{Comparativa global de algoritmos de ordenación (escala log-lineal).}
+    \label{fig:comparativa}
+\end{figure}
+
+\section{Conclusiones}
+
+Los resultados obtenidos confirman en términos generales las eficiencias teóricas
+de los algoritmos estudiados. La separación entre órdenes de eficiencia es clara
+y consistente. Los algoritmos $O(n \log n)$ superan ampliamente a los cuadráticos
+a partir de tamaños de entrada moderados, y los exponenciales escalan de forma
+inviable en la práctica; Hanoi supera los 400 segundos para $n=33$.
+
+Entre los algoritmos de ordenación, mergesort presenta el mejor rendimiento en
+caso promedio, si bien su peor caso muestra una degradación notable. Quicksort
+y heapsort ofrecen un rendimiento intermedio y más uniforme, aunque no se han
+medido sus peores casos en este estudio. Los algoritmos cuadráticos — inserción,
+selección y burbuja — presentan tiempos similares entre sí, siendo inserción
+ligeramente más rápido en la práctica.
+
+El caso más destacable es shellsort, cuyo comportamiento empírico se aleja
+significativamente de su eficiencia teórica $O(n^2)$. El ajuste libre sobre
+los datos empíricos produce un exponente $\alpha = \alphaShellsort$, muy
+inferior al teórico, lo que pone de manifiesto que la secuencia de gaps empleada
+determina en gran medida el rendimiento real del algoritmo. Asimismo, el vector
+en orden decreciente, empleado en esta práctica como peor caso, no logra
+degradar el rendimiento.
+
+En cuanto a los algoritmos exponenciales, ambos ajustes presentan una bondad
+elevada, confirmando el crecimiento predicho por la teoría. La diferencia entre
+las bases $2$ y $\varphi \approx 1{,}618$ se traduce en una separación de varios
+órdenes de magnitud entre Hanoi y Fibonacci para $n$ moderado.
+
 % --------------------------------------------------------------
 %     You don't have to mess with anything below this line.
 % --------------------------------------------------------------
