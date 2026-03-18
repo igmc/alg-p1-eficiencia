@@ -1,42 +1,58 @@
-# Práctica 1 - Análisis de eficiencia de algoritmos
-Algorítmica ~ Grupo A2
+# Práctica 1 — Análisis de eficiencia de algoritmos
+**Algorítmica · Subgrupo A2 · Grado en Ingeniería Informática · Universidad de Granada**
 
 ## Autores
-(quiénes somoss)
+* López Lozano, Francisco Javier
+* Martos Molina, Enrique
+* Mestre Redondo, Iván
+* Molina Cobo, Juan Ignacio
 
-## Algoritmos
-Hemos trabajado los siguientes algoritmos:
-* Ordenación por inserción (O(n^2))
-* Ordenación por selección (O(n^2))
-* Ordenación por burbuja (O(n^2))
-* Ordenación por Shellsort (O(n^2))
-* Ordenación por Heapsort (O(n log n))
-* Ordenación por Quicksort (O(n log n), peor caso O(n^2))
-* Fibonacci (O(phi^n))
-* Torres de Hanoi (O(2^n))
+## Algoritmos implementados
+| Algoritmo | Eficiencia teórica |
+|---|---|
+| Inserción, Selección, Burbuja, Shellsort | O(n²) |
+| Mergesort, Heapsort, Quicksort | O(n log n) / O(n²) peor caso |
+| Fibonacci | O(φⁿ), φ ≈ 1.618 |
+| Torres de Hanoi | O(2ⁿ) |
 
 ## Entorno de compilación
-(en qué ordenador hemos medido tiempos)
+Las mediciones se han realizado sobre Apple M2, 8 núcleos, 3.5 GHz, 8 GB RAM, macOS 26.3.1 Tahoe, compilando con `g++ -std=c++11 -O0`.
 
 ## Estructura del repositorio
-
-src/        Implementación de los algoritmos en C++
-scripts/    Scripts de medición y graficado
-data/       Datos empíricos generados
-figures/    Gráficas generadas
-memoria/    Memoria final de la práctica
+```
+src/        Implementaciones en C++
+bin/        Ejecutables compilados
+scripts/    Scripts de medición y graficado (shell + gnuplot)
+data/       Datos empíricos generados (.dat)
+figures/    Gráficas generadas (.pdf)
+memoria/    Memoria final de la práctica (.tex + .pdf)
+```
 
 ## Cómo reproducir los resultados
+
 ### 1. Compilación
-`make all` para compilar todos los ficheros.
-### 2. Generación de datos empíricos 
-```./scripts/medicion.sh``` ejecuta alguno de los programas y graba los datos en la carpeta data. Acepta los siguientes parámetros:
-* **programa**: programa a ejecutar (ej: ./bin/burbuja)
-* **inicio**: inicio del intervalo de valores a dar
-* **fin**: final del intervalo de valores a dar
-* **incremento**: diferencia entre número de elementos ejecutados
+```bash
+make all
+```
+### 2. Toma de mediciones
+Los scripts de recogida lanzan automáticamente todos los algoritmos de cada grupo:
+```bash
+./scripts/recoger_cuadratico.sh
+./scripts/recoger_logaritmico.sh
+./scripts/recoger_exponencial.sh
+./scripts/medicion_nlog_pequena.sh
+```
+También se puede lanzar todo de una vez con:
+```bash
+./scripts/lanzar_mediciones.sh
+```
+### 3. Generación de gráficas y ajuste híbrido
+```bash
+./scripts/graficar.sh
+```
+Esto ejecuta todos los scripts gnuplot en `scripts/` y deposita las gráficas en `figures/`. Los parámetros de ajuste híbrido se exportan automáticamente a `memoria/params_*.tex`.
 
-### 3. Creación de gráficas y ajuste híbrido
-(.sh de gnuplot)
-
-## Notas
+### 4. Compilación de la memoria
+```bash
+cd memoria && latexmk -pdf memoria.tex
+```
