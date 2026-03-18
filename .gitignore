@@ -1,10 +1,10 @@
 bin/*
 !bin/.gitkeep
-*.dat
 */.DS_Store
 .DS_Store
 memoria/*
 !memoria/*.tex
+!memoria/*.pdf
 
 
 # Prerequisites
