@@ -4,7 +4,7 @@
 # configurar formato de exportado y tamaño
 
 set terminal pdfcairo size 5, 3.6 enhanced font "Latin Modern Roman,12" \
-    background "#FAFAF8"
+    background "#ffffff"
 
 set output "figures/exponenciales.pdf"
 
@@ -16,7 +16,7 @@ set ylabel "Tiempo (s)" font "Latin Modern Roman,13" offset -1,0
 
 # ejes y escala
 set logscale y
-set format y "10^{%L}"      # clean superscript notation
+set format y "10^{%L}"
 set xtics font "Latin Modern Roman,11"
 set ytics font "Latin Modern Roman,11"
 
@@ -56,9 +56,9 @@ fit f_fibo(x)  'data/fibonacci.dat'  every ::1 via b
 
 # graficar
 plot \
-  'data/hanoi.dat' every ::1 u 1:2 w points ls 1 title 'Hanoi (datos)', \
+  'data/hanoi.dat' every ::1 u 1:2 w points ls 1 title 'Hanoi', \
   f_hanoi(x)                 w lines  ls 2 title 'Ajuste Hanoi  2^n', \
-  'data/fibonacci.dat' every ::1 u 1:2 w points ls 3 title 'Fibonacci (datos)', \
+  'data/fibonacci.dat' every ::1 u 1:2 w points ls 3 title 'Fibonacci', \
   f_fibo(x)                  w lines  ls 4 title 'Ajuste Fibonacci  {/Symbol j}^n'
 
 # guardar ajuste
